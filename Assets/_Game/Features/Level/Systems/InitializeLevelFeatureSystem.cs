@@ -7,6 +7,7 @@ public sealed class InitializeLevelFeatureSystem : ReactiveSystem<GameEntity>, I
 {
     readonly Contexts _contexts;
     Transform _playAreaContainer;
+    private int _levelCount;
 
     public InitializeLevelFeatureSystem(Contexts contexts) : base(contexts.game)
     {
@@ -16,15 +17,16 @@ public sealed class InitializeLevelFeatureSystem : ReactiveSystem<GameEntity>, I
     public void Initialize()
     {
         var levelInfo = Resources.Load<TextAsset>(LevelImportTags.LevelInfo).text;
-        var levelCount = JsonUtility.FromJson<LevelInfo>(levelInfo).LevelCount;
+        _levelCount = JsonUtility.FromJson<LevelInfo>(levelInfo).LevelCount;
 
-        if (LevelService.PlayerCurrentLevel >= levelCount)
-            LevelService.PlayerCurrentLevel = Random.Range(0, levelCount);
-        SetupLevel(LevelService.PlayerCurrentLevel);
+        SetupLevel();
     }
 
-    private void SetupLevel(int level)
+    private void SetupLevel()
     {
+        if (LevelService.PlayerCurrentLevel >= _levelCount)
+            LevelService.PlayerCurrentLevel = Random.Range(0, _levelCount);
+        var level = LevelService.PlayerCurrentLevel;
         _contexts.input.isInputBlock = true;
         var levelString = Resources.Load<TextAsset>(LevelImportTags.GetLevelName(level)).text;
         var data = JsonUtility.FromJson<LevelDataContainer>(levelString);
@@ -104,6 +106,6 @@ public sealed class InitializeLevelFeatureSystem : ReactiveSystem<GameEntity>, I
         _contexts.game.isLevelEnd = false;
         _contexts.game.ReplaceCurrentCollectedCubes(0);
         _contexts.game.ReplaceCreatedCubeCount(0);
-        SetupLevel(LevelService.PlayerCurrentLevel);
+        SetupLevel();
     }
 }

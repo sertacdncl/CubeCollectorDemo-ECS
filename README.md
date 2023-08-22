@@ -7,7 +7,14 @@ Cube Collector Demo - ECS is a simple demo made with Unity ECS and [Entitas](htt
 
 Controls: Touch / Input
 
+## Description
+
+Levels generated from bitmaps and saved to json files.
 
 ## Technologies
 ECS, Entitas Framework, DoTween, URP, Unity 2021.3.9f1
+
+
+
+https://github.com/sertacdncl/CubeCollectorDemo-ECS/assets/20639384/18b70e07-c9f2-480a-9f4d-bd045c5aceef
 
